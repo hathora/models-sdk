@@ -17,6 +17,7 @@ print("=== Complete Yapp SDK Workflow ===\n")
 # Step 1: Transcribe audio
 print("Step 1: Transcribing audio...")
 transcription = client.audio.transcriptions.create(
+    "parakeet",  # Model first
     file="original_audio.wav",
     start_time=0,
     end_time=10  # First 10 seconds

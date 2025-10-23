@@ -18,22 +18,24 @@ class Transcription:
 
     def create(
         self,
+        model: str,
         file: AudioFile,
         start_time: Optional[float] = None,
         end_time: Optional[float] = None,
-        model: Optional[str] = None,
+        **kwargs,
     ) -> TranscriptionResponse:
         """
-        Transcribe audio to text using the Parakeet STT model.
+        Transcribe audio to text using the specified STT model.
 
         Args:
+            model: STT model to use (currently: "parakeet")
             file: Audio file to transcribe. Can be:
                 - File path (str or Path)
                 - File-like object
                 - Raw bytes
             start_time: Optional start time in seconds for the transcription window
             end_time: Optional end time in seconds for the transcription window
-            model: Optional model name (currently uses Parakeet by default)
+            **kwargs: Additional model-specific parameters (reserved for future use)
 
         Returns:
             TranscriptionResponse with the transcribed text
@@ -41,12 +43,29 @@ class Transcription:
         Example:
             >>> client = Yapp(api_key="your-api-key")
             >>> response = client.audio.transcriptions.create(
+            ...     "parakeet",
             ...     file="audio.wav",
             ...     start_time=3.0,
             ...     end_time=9.0
             ... )
             >>> print(response.text)
         """
+        # Currently only parakeet is supported
+        if model != "parakeet":
+            from yapp.exceptions import ValidationError
+            raise ValidationError(f"Unknown STT model: {model}. Currently supported: 'parakeet'")
+
+        # Route to parakeet (future: add other models here)
+        return self._transcribe_parakeet(file, start_time, end_time, **kwargs)
+
+    def _transcribe_parakeet(
+        self,
+        file: AudioFile,
+        start_time: Optional[float] = None,
+        end_time: Optional[float] = None,
+        **kwargs,
+    ) -> TranscriptionResponse:
+        """Internal method to transcribe using Parakeet model"""
         # Prepare the file for upload
         file_obj, mime_type = prepare_audio_file(file)
 
@@ -61,6 +80,15 @@ class Transcription:
         files = {
             'file': ('audio', file_obj, mime_type)
         }
+
+        # Validate unknown parameters
+        if kwargs:
+            unknown = ", ".join(kwargs.keys())
+            from yapp.exceptions import ValidationError
+            raise ValidationError(
+                f"Unknown parameters for Parakeet model: {unknown}. "
+                f"Valid parameters: start_time, end_time"
+            )
 
         # Make the request
         try:
