@@ -1,0 +1,85 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yapp"
+version = "0.1.0"
+description = "Python SDK for Yapp Voice AI API - Speech-to-Text and Text-to-Speech"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Yapp", email = "support@yapp.ai"}
+]
+maintainers = [
+    {name = "Yapp", email = "support@yapp.ai"}
+]
+keywords = [
+    "voice",
+    "ai",
+    "speech-to-text",
+    "text-to-speech",
+    "tts",
+    "stt",
+    "audio",
+    "speech-recognition",
+    "voice-cloning",
+    "kokoro",
+    "resemble"
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "requests>=2.31.0",
+    "typing-extensions>=4.5.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=23.0",
+    "mypy>=1.0",
+    "ruff>=0.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/yapp-sdk"
+Documentation = "https://github.com/yourusername/yapp-sdk#readme"
+Repository = "https://github.com/yourusername/yapp-sdk"
+"Bug Tracker" = "https://github.com/yourusername/yapp-sdk/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["yapp*"]
+exclude = ["tests*", "examples*"]
+
+[tool.setuptools.package-data]
+yapp = ["py.typed"]
+
+[tool.black]
+line-length = 100
+target-version = ['py38']
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
