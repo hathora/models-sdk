@@ -28,8 +28,8 @@ class Transcription:
         Transcribe audio to text using the specified STT model.
 
         Args:
-            model: STT model to use (currently: "parakeet")
-            file: Audio file to transcribe. Can be:
+            model: STT model to use (currently: "parakeet") - positional
+            file: Audio file to transcribe - positional. Can be:
                 - File path (str or Path)
                 - File-like object
                 - Raw bytes
@@ -42,9 +42,10 @@ class Transcription:
 
         Example:
             >>> client = Yapp(api_key="your-api-key")
+            >>> # Both model and file are positional
             >>> response = client.audio.transcriptions.create(
             ...     "parakeet",
-            ...     file="audio.wav",
+            ...     "audio.wav",
             ...     start_time=3.0,
             ...     end_time=9.0
             ... )

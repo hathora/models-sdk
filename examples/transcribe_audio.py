@@ -13,8 +13,8 @@ client = yapp.Yapp(api_key="your-api-key-here")
 # Example 1: Simple transcription
 print("Example 1: Simple transcription with Parakeet")
 response = client.audio.transcriptions.create(
-    "parakeet",  # Model first
-    file="audio.wav"
+    "parakeet",   # Model (positional)
+    "audio.wav"   # File (positional)
 )
 print(f"Transcription: {response.text}")
 print()
@@ -22,8 +22,8 @@ print()
 # Example 2: Transcribe with time window
 print("Example 2: Transcription with time window")
 response = client.audio.transcriptions.create(
-    "parakeet",  # Model first
-    file="audio.wav",
+    "parakeet",   # Model (positional)
+    "audio.wav",  # File (positional)
     start_time=3.0,  # Start at 3 seconds
     end_time=9.0     # End at 9 seconds
 )
@@ -34,8 +34,8 @@ print()
 print("Example 3: Transcription from file object")
 with open("audio.wav", "rb") as audio_file:
     response = client.audio.transcriptions.create(
-        "parakeet",  # Model first
-        file=audio_file
+        "parakeet",   # Model (positional)
+        audio_file    # File (positional)
     )
     print(f"Transcription: {response.text}")
 print()
@@ -43,8 +43,8 @@ print()
 # Example 4: Transcribe with metadata
 print("Example 4: Transcription with metadata")
 response = client.audio.transcriptions.create(
-    "parakeet",  # Model first
-    file="audio.wav",
+    "parakeet",   # Model (positional)
+    "audio.wav",  # File (positional)
     start_time=0,
     end_time=30
 )

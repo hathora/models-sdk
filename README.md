@@ -52,7 +52,7 @@ import yapp
 client = yapp.Yapp(api_key="your-api-key")
 
 # Transcribe audio to text
-transcription = client.audio.transcriptions.create("parakeet", file="audio.wav")
+transcription = client.audio.transcriptions.create("parakeet", "audio.wav")
 print(transcription.text)
 
 # Generate speech from text
@@ -92,7 +92,7 @@ import yapp
 client = yapp.Yapp(api_key="your-api-key")
 
 # Transcribe an entire audio file using Parakeet
-response = client.audio.transcriptions.create("parakeet", file="audio.wav")
+response = client.audio.transcriptions.create("parakeet", "audio.wav")
 print(response.text)
 ```
 
@@ -101,8 +101,8 @@ print(response.text)
 ```python
 # Transcribe only a specific time range
 response = client.audio.transcriptions.create(
-    "parakeet",  # Model first
-    file="audio.wav",
+    "parakeet",   # Model (positional)
+    "audio.wav",  # File (positional)
     start_time=3.0,  # Start at 3 seconds
     end_time=9.0     # End at 9 seconds
 )
@@ -115,19 +115,19 @@ The SDK automatically handles various audio formats:
 
 ```python
 # From file path (string)
-response = client.audio.transcriptions.create("parakeet", file="audio.wav")
+response = client.audio.transcriptions.create("parakeet", "audio.wav")
 
 # From pathlib.Path
 from pathlib import Path
-response = client.audio.transcriptions.create("parakeet", file=Path("audio.mp3"))
+response = client.audio.transcriptions.create("parakeet", Path("audio.mp3"))
 
 # From file object
 with open("audio.wav", "rb") as f:
-    response = client.audio.transcriptions.create("parakeet", file=f)
+    response = client.audio.transcriptions.create("parakeet", f)
 
 # From bytes
 audio_bytes = open("audio.wav", "rb").read()
-response = client.audio.transcriptions.create("parakeet", file=audio_bytes)
+response = client.audio.transcriptions.create("parakeet", audio_bytes)
 ```
 
 ### Text-to-Speech (Synthesis)
@@ -304,11 +304,17 @@ Main client class for the Yapp API.
 Transcribe audio to text using the Parakeet STT model.
 
 **Parameters:**
-- `model` (str): STT model to use (currently: "parakeet") - **required, first parameter**
-- `file` (str | Path | BinaryIO | bytes): Audio file to transcribe
+- `model` (str): STT model to use (currently: "parakeet") - **positional, required**
+- `file` (str | Path | BinaryIO | bytes): Audio file to transcribe - **positional, required**
 - `start_time` (float, optional): Start time in seconds for transcription window
 - `end_time` (float, optional): End time in seconds for transcription window
 - `**kwargs`: Additional model-specific parameters (reserved for future use)
+
+**Example:**
+```python
+# Both model and file are positional
+response = client.audio.transcriptions.create("parakeet", "audio.wav")
+```
 
 **Available Models:**
 - `"parakeet"` - nvidia/parakeet-tdt-0.6b-v3 - Multilingual ASR with word-level timestamps
@@ -470,8 +476,8 @@ client = yapp.Yapp(api_key="your-api-key")
 
 # 1. Transcribe audio
 transcription = client.audio.transcriptions.create(
-    "parakeet",
-    file="original.wav",
+    "parakeet",      # Model (positional)
+    "original.wav",  # File (positional)
     start_time=0,
     end_time=10
 )
