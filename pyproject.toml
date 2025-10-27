@@ -3,7 +3,7 @@ requires = ["setuptools>=45", "wheel", "setuptools_scm>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "yappai"
+name = "yapp"
 version = "0.2.0"
 description = "Python SDK for Yapp Voice AI API - Speech-to-Text and Text-to-Speech"
 readme = "README.md"
