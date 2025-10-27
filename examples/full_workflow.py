@@ -16,7 +16,7 @@ print("=== Complete Yapp SDK Workflow ===\n")
 
 # Step 1: Transcribe audio
 print("Step 1: Transcribing audio...")
-transcription = client.audio.transcriptions.create(
+transcription = client.speech_to_text.convert(
     "parakeet",           # Model (positional)
     "original_audio.wav", # File (positional)
     start_time=0,
@@ -30,7 +30,7 @@ print(f"Modified text: {modified_text}\n")
 
 # Step 3: Generate speech with Kokoro
 print("Step 3a: Generating speech with Kokoro...")
-kokoro_response = client.audio.speech.create(
+kokoro_response = client.text_to_speech.convert(
     "kokoro",  # Model first
     modified_text,
     voice="af_bella",
@@ -41,7 +41,7 @@ print("Saved Kokoro output to output_kokoro.wav\n")
 
 # Step 4: Generate speech with ResembleAI for comparison
 print("Step 3b: Generating speech with ResembleAI...")
-resemble_response = client.audio.speech.create(
+resemble_response = client.text_to_speech.convert(
     "resemble",  # Model first
     modified_text,
     exaggeration=0.6,
@@ -53,7 +53,7 @@ print("Saved ResembleAI output to output_resemble.wav\n")
 # Step 5: Voice cloning - transcribe + clone
 print("Step 4: Voice cloning workflow...")
 # Use the original audio as a voice reference
-cloned_response = client.audio.speech.resemble(
+cloned_response = client.text_to_speech.resemble(
     text="This is a new sentence in the cloned voice.",
     audio_prompt="original_audio.wav",
     cfg_weight=0.9  # High adherence to original voice

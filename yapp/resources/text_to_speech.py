@@ -1,4 +1,4 @@
-"""Synthesis (TTS) resources"""
+"""Text-to-Speech (TTS) resources"""
 
 from typing import Optional, Union, Literal, Dict, Any
 from pathlib import Path
@@ -8,7 +8,7 @@ from yapp._utils import prepare_audio_file
 from yapp.exceptions import APIError, ValidationError
 
 
-class Synthesis:
+class TextToSpeech:
     """Handles text-to-speech synthesis"""
 
     # Model parameter specifications
@@ -62,7 +62,7 @@ class Synthesis:
             Dictionary of parameter specifications
 
         Example:
-            >>> params = Synthesis.get_model_parameters("kokoro")
+            >>> params = TextToSpeech.get_model_parameters("kokoro")
             >>> for param_name, param_info in params.items():
             ...     print(f"{param_name}: {param_info['description']}")
             voice: Voice to use for synthesis
@@ -81,7 +81,7 @@ class Synthesis:
             List of model names
 
         Example:
-            >>> models = Synthesis.list_models()
+            >>> models = TextToSpeech.list_models()
             >>> print(models)
             ['kokoro', 'resemble']
         """
@@ -95,8 +95,8 @@ class Synthesis:
             model: Model name ("kokoro" or "resemble")
 
         Example:
-            >>> client = Yapp(api_key="your-api-key")
-            >>> client.audio.speech.print_model_help("kokoro")
+            >>> client = yapp.Yapp(api_key="your-api-key")
+            >>> client.text_to_speech.print_model_help("kokoro")
             Model: kokoro
             Parameters:
               - voice (str, default='af_bella'): Voice to use for synthesis
@@ -111,14 +111,14 @@ class Synthesis:
             print(f"  - {param_name} ({param_info['type']}, default={default_str}): {param_info['description']}")
         print()
 
-    def create(
+    def convert(
         self,
         model: Literal["kokoro", "resemble"],
         text: str,
         **kwargs,
     ) -> AudioResponse:
         """
-        Create speech from text using the specified model.
+        Convert text to speech using the specified model.
 
         This is a unified interface that routes to the appropriate model-specific endpoint.
         Each model has its own parameters - pass them as keyword arguments.
@@ -142,8 +142,8 @@ class Synthesis:
 
         Examples:
             >>> # Kokoro model
-            >>> client = Yapp(api_key="your-api-key")
-            >>> response = client.audio.speech.create(
+            >>> client = yapp.Yapp(api_key="your-api-key")
+            >>> response = client.text_to_speech.convert(
             ...     "kokoro",
             ...     "Hello world",
             ...     voice="af_bella",
@@ -152,7 +152,7 @@ class Synthesis:
             >>> response.save("output.wav")
             >>>
             >>> # ResembleAI model
-            >>> response = client.audio.speech.create(
+            >>> response = client.text_to_speech.convert(
             ...     "resemble",
             ...     "Hello world",
             ...     exaggeration=0.7,
@@ -161,7 +161,7 @@ class Synthesis:
             >>> response.save("output.wav")
             >>>
             >>> # ResembleAI with voice cloning
-            >>> response = client.audio.speech.create(
+            >>> response = client.text_to_speech.convert(
             ...     "resemble",
             ...     "Hello world",
             ...     audio_prompt="reference.wav",
@@ -181,7 +181,7 @@ class Synthesis:
                 raise ValidationError(
                     f"Unknown parameters for Kokoro model: {unknown}. "
                     f"Valid parameters: {valid_params}\n"
-                    f"Use client.audio.speech.print_model_help('kokoro') for more details."
+                    f"Use client.text_to_speech.print_model_help('kokoro') for more details."
                 )
 
             return self.kokoro(text=text, voice=voice, speed=speed)
@@ -199,7 +199,7 @@ class Synthesis:
                 raise ValidationError(
                     f"Unknown parameters for ResembleAI model: {unknown}. "
                     f"Valid parameters: {valid_params}\n"
-                    f"Use client.audio.speech.print_model_help('resemble') for more details."
+                    f"Use client.text_to_speech.print_model_help('resemble') for more details."
                 )
 
             return self.resemble(
@@ -213,7 +213,7 @@ class Synthesis:
             available_models = ", ".join(self.MODEL_PARAMS.keys())
             raise ValidationError(
                 f"Unknown model: {model}. Available models: {available_models}\n"
-                f"Use client.audio.speech.list_models() to see all models."
+                f"Use client.text_to_speech.list_models() to see all models."
             )
 
     def kokoro(
@@ -236,8 +236,8 @@ class Synthesis:
             AudioResponse containing the generated audio
 
         Example:
-            >>> client = Yapp(api_key="your-api-key")
-            >>> response = client.audio.speech.kokoro(
+            >>> client = yapp.Yapp(api_key="your-api-key")
+            >>> response = client.text_to_speech.kokoro(
             ...     text="Hello world",
             ...     voice="af_bella",
             ...     speed=1.0
@@ -290,16 +290,16 @@ class Synthesis:
             AudioResponse containing the generated audio
 
         Example:
-            >>> client = Yapp(api_key="your-api-key")
+            >>> client = yapp.Yapp(api_key="your-api-key")
             >>> # Simple generation
-            >>> response = client.audio.speech.resemble(
+            >>> response = client.text_to_speech.resemble(
             ...     text="Hello world",
             ...     exaggeration=0.7
             ... )
             >>> response.save("output.wav")
             >>>
             >>> # With voice cloning
-            >>> response = client.audio.speech.resemble(
+            >>> response = client.text_to_speech.resemble(
             ...     text="Hello world",
             ...     audio_prompt="reference_voice.wav",
             ...     cfg_weight=0.8

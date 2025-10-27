@@ -1,4 +1,4 @@
-"""Transcription (STT) resource"""
+"""Speech-to-Text (STT) resource"""
 
 from typing import Optional, Union
 from pathlib import Path
@@ -8,7 +8,7 @@ from yapp._utils import prepare_audio_file
 from yapp.exceptions import APIError, ValidationError
 
 
-class Transcription:
+class SpeechToText:
     """Handles speech-to-text transcription using the Parakeet model"""
 
     def __init__(self, client):
@@ -16,7 +16,7 @@ class Transcription:
         # Parakeet STT model URL
         self._parakeet_url = "https://app-1c7bebb9-6977-4101-9619-833b251b86d1.app.hathora.dev"
 
-    def create(
+    def convert(
         self,
         model: str,
         file: AudioFile,
@@ -25,7 +25,7 @@ class Transcription:
         **kwargs,
     ) -> TranscriptionResponse:
         """
-        Transcribe audio to text using the specified STT model.
+        Convert speech to text using the specified STT model.
 
         Args:
             model: STT model to use (currently: "parakeet") - positional
@@ -41,9 +41,9 @@ class Transcription:
             TranscriptionResponse with the transcribed text
 
         Example:
-            >>> client = Yapp(api_key="your-api-key")
+            >>> client = yapp.Yapp(api_key="your-api-key")
             >>> # Both model and file are positional
-            >>> response = client.audio.transcriptions.create(
+            >>> response = client.speech_to_text.convert(
             ...     "parakeet",
             ...     "audio.wav",
             ...     start_time=3.0,
@@ -53,7 +53,6 @@ class Transcription:
         """
         # Currently only parakeet is supported
         if model != "parakeet":
-            from yapp.exceptions import ValidationError
             raise ValidationError(f"Unknown STT model: {model}. Currently supported: 'parakeet'")
 
         # Route to parakeet (future: add other models here)
@@ -85,7 +84,6 @@ class Transcription:
         # Validate unknown parameters
         if kwargs:
             unknown = ", ".join(kwargs.keys())
-            from yapp.exceptions import ValidationError
             raise ValidationError(
                 f"Unknown parameters for Parakeet model: {unknown}. "
                 f"Valid parameters: start_time, end_time"
