@@ -3,26 +3,16 @@
 from typing import Optional, Dict, Any
 import requests
 
-from yapp.resources.transcription import Transcription
-from yapp.resources.synthesis import Synthesis
+from yapp.resources.speech_to_text import SpeechToText
+from yapp.resources.text_to_speech import TextToSpeech
 from yapp.exceptions import APIError, AuthenticationError
-
-
-class Audio:
-    """Audio namespace containing transcriptions and speech resources"""
-
-    def __init__(self, client):
-        self._client = client
-        self.transcriptions = Transcription(client)
-        self.speech = Synthesis(client)
 
 
 class Yapp:
     """
     Main client for the Yapp Voice AI API.
 
-    This client provides access to speech-to-text (transcription) and
-    text-to-speech (synthesis) capabilities.
+    This client provides access to speech-to-text and text-to-speech capabilities.
 
     Args:
         api_key: Your Yapp API key (optional, can also be set via environment variable)
@@ -33,11 +23,11 @@ class Yapp:
         >>> client = yapp.Yapp(api_key="your-api-key")
         >>>
         >>> # Transcribe audio
-        >>> transcription = client.audio.transcriptions.create(file="audio.wav")
-        >>> print(transcription.text)
+        >>> response = client.speech_to_text.convert("parakeet", "audio.wav")
+        >>> print(response.text)
         >>>
         >>> # Generate speech
-        >>> response = client.audio.speech.create(text="Hello world")
+        >>> response = client.text_to_speech.convert("kokoro", "Hello world")
         >>> response.save("output.wav")
     """
 
@@ -50,7 +40,8 @@ class Yapp:
         self.timeout = timeout
 
         # Initialize resources
-        self.audio = Audio(self)
+        self.speech_to_text = SpeechToText(self)
+        self.text_to_speech = TextToSpeech(self)
 
     def _get_api_key_from_env(self) -> Optional[str]:
         """Get API key from environment variable"""

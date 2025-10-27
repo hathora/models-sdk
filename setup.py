@@ -13,8 +13,8 @@ readme_file = Path(__file__).parent / "README.md"
 long_description = readme_file.read_text(encoding="utf-8")
 
 setup(
-    name="yapp",  # Changed from "yapp-sdk" to just "yapp" for pip install yapp
-    version="0.1.0",
+    name="yappai",  # Package name on PyPI - install with: pip install yappai
+    version="0.2.0",
     author="Yapp",
     author_email="support@yapp.ai",
     description="Python SDK for Yapp Voice AI API - Speech-to-Text and Text-to-Speech",

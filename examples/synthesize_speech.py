@@ -12,7 +12,7 @@ client = yapp.Yapp(api_key="your-api-key-here")
 
 # Example 1: Simple speech synthesis with Kokoro (default)
 print("Example 1: Simple speech synthesis (Kokoro)")
-response = client.audio.speech.create(
+response = client.text_to_speech.convert(
     "kokoro",  # Model first
     "Hello world! This is a test of the Yapp text-to-speech API."
 )
@@ -22,7 +22,7 @@ print()
 
 # Example 2: Speech synthesis with Kokoro-specific parameters
 print("Example 2: Custom voice and speed with Kokoro")
-response = client.audio.speech.create(
+response = client.text_to_speech.convert(
     "kokoro",  # Model first
     "The quick brown fox jumps over the lazy dog.",
     voice="af_bella",  # Kokoro parameter
@@ -34,7 +34,7 @@ print()
 
 # Example 3: Using Kokoro directly
 print("Example 3: Using Kokoro model directly")
-response = client.audio.speech.kokoro(
+response = client.text_to_speech.kokoro(
     text="This is using the Kokoro model directly.",
     voice="af_bella",
     speed=0.8  # 20% slower
@@ -45,7 +45,7 @@ print()
 
 # Example 4: Working with audio bytes directly
 print("Example 4: Working with audio bytes")
-response = client.audio.speech.create(
+response = client.text_to_speech.convert(
     "kokoro",  # Model first
     "Getting the raw audio bytes."
 )
@@ -56,7 +56,7 @@ print()
 
 # Example 5: Using ResembleAI model via create()
 print("Example 5: Using ResembleAI via create()")
-response = client.audio.speech.create(
+response = client.text_to_speech.convert(
     "resemble",  # Model first
     "This uses the ResembleAI model.",
     exaggeration=0.6,  # ResembleAI parameter
@@ -68,7 +68,7 @@ print()
 
 # Example 6: Using stream_to_file (alias for save)
 print("Example 6: Using stream_to_file")
-response = client.audio.speech.create(
+response = client.text_to_speech.convert(
     "kokoro",  # Model first
     "This demonstrates the stream_to_file method."
 )

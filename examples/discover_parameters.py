@@ -17,7 +17,7 @@ print("=== Model Parameter Discovery ===\n")
 # ============================================================================
 print("1. List all available TTS models:")
 print("-" * 50)
-models = client.audio.speech.list_models()
+models = client.text_to_speech.list_models()
 print(f"Available models: {models}")
 print()
 
@@ -28,10 +28,10 @@ print("2. Get detailed parameter info for each model:")
 print("-" * 50)
 
 # Kokoro model help
-client.audio.speech.print_model_help("kokoro")
+client.text_to_speech.print_model_help("kokoro")
 
 # ResembleAI model help
-client.audio.speech.print_model_help("resemble")
+client.text_to_speech.print_model_help("resemble")
 
 # ============================================================================
 # 3. PROGRAMMATICALLY ACCESS PARAMETER INFO
@@ -40,7 +40,7 @@ print("3. Programmatically access parameter specifications:")
 print("-" * 50)
 
 # Get Kokoro parameters
-kokoro_params = client.audio.speech.get_model_parameters("kokoro")
+kokoro_params = client.text_to_speech.get_model_parameters("kokoro")
 print("Kokoro parameters:")
 for param_name, param_info in kokoro_params.items():
     print(f"  {param_name}:")
@@ -50,7 +50,7 @@ for param_name, param_info in kokoro_params.items():
 print()
 
 # Get ResembleAI parameters
-resemble_params = client.audio.speech.get_model_parameters("resemble")
+resemble_params = client.text_to_speech.get_model_parameters("resemble")
 print("ResembleAI parameters:")
 for param_name, param_info in resemble_params.items():
     print(f"  {param_name}:")
@@ -67,7 +67,7 @@ print("-" * 50)
 
 try:
     # Try to use wrong parameter for Kokoro
-    response = client.audio.speech.create(
+    response = client.text_to_speech.convert(
         "kokoro",  # Model first
         "This will fail",
         exaggeration=0.5  # ERROR: This is a ResembleAI parameter!
@@ -77,7 +77,7 @@ except yapp.ValidationError as e:
 
 try:
     # Try to use wrong parameter for ResembleAI
-    response = client.audio.speech.create(
+    response = client.text_to_speech.convert(
         "resemble",  # Model first
         "This will fail",
         speed=1.5  # ERROR: This is a Kokoro parameter!
@@ -87,7 +87,7 @@ except yapp.ValidationError as e:
 
 try:
     # Try to use unknown model
-    response = client.audio.speech.create(
+    response = client.text_to_speech.convert(
         "unknown_model",  # Model first - ERROR: Model doesn't exist!
         "This will fail"
     )
@@ -101,12 +101,12 @@ print("5. Build dynamic API calls based on discovered parameters:")
 print("-" * 50)
 
 # Get default values for Kokoro and use them
-kokoro_params = client.audio.speech.get_model_parameters("kokoro")
+kokoro_params = client.text_to_speech.get_model_parameters("kokoro")
 default_voice = kokoro_params["voice"]["default"]
 default_speed = kokoro_params["speed"]["default"]
 
 print(f"Using Kokoro defaults: voice={default_voice}, speed={default_speed}")
-response = client.audio.speech.create(
+response = client.text_to_speech.convert(
     "kokoro",  # Model first
     "Using discovered default values",
     voice=default_voice,
@@ -118,6 +118,6 @@ print()
 
 print("=== Discovery Complete ===")
 print("\nQuick reference:")
-print("  - client.audio.speech.list_models() - List all models")
-print("  - client.audio.speech.print_model_help(model) - Print parameter help")
-print("  - client.audio.speech.get_model_parameters(model) - Get parameter specs")
+print("  - client.text_to_speech.list_models() - List all models")
+print("  - client.text_to_speech.print_model_help(model) - Print parameter help")
+print("  - client.text_to_speech.get_model_parameters(model) - Get parameter specs")

@@ -12,7 +12,7 @@ client = yapp.Yapp(api_key="your-api-key-here")
 
 # Example 1: Simple transcription
 print("Example 1: Simple transcription with Parakeet")
-response = client.audio.transcriptions.create(
+response = client.speech_to_text.convert(
     "parakeet",   # Model (positional)
     "audio.wav"   # File (positional)
 )
@@ -21,7 +21,7 @@ print()
 
 # Example 2: Transcribe with time window
 print("Example 2: Transcription with time window")
-response = client.audio.transcriptions.create(
+response = client.speech_to_text.convert(
     "parakeet",   # Model (positional)
     "audio.wav",  # File (positional)
     start_time=3.0,  # Start at 3 seconds
@@ -33,7 +33,7 @@ print()
 # Example 3: Transcribe from file object
 print("Example 3: Transcription from file object")
 with open("audio.wav", "rb") as audio_file:
-    response = client.audio.transcriptions.create(
+    response = client.speech_to_text.convert(
         "parakeet",   # Model (positional)
         audio_file    # File (positional)
     )
@@ -42,7 +42,7 @@ print()
 
 # Example 4: Transcribe with metadata
 print("Example 4: Transcription with metadata")
-response = client.audio.transcriptions.create(
+response = client.speech_to_text.convert(
     "parakeet",   # Model (positional)
     "audio.wav",  # File (positional)
     start_time=0,

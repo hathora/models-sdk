@@ -15,7 +15,21 @@ The official Python SDK for the Yapp Voice AI API. Easily integrate speech-to-te
 ## Available Models
 
 ### Speech-to-Text (STT)
-- **Parakeet** - Multilingual automatic speech recognition with word-level timestamps
+
+| Model | Parameters | Description |
+|-------|-----------|-------------|
+| **Parakeet** | `file` | Audio file to transcribe (required, positional) |
+| | `start_time` | Start time in seconds for transcription window (optional) |
+| | `end_time` | End time in seconds for transcription window (optional) |
+
+**Example:**
+```python
+# Basic usage
+client.speech_to_text.convert("parakeet", "audio.wav")
+
+# With time window
+client.speech_to_text.convert("parakeet", "audio.wav", start_time=3.0, end_time=9.0)
+```
 
 ### Text-to-Speech (TTS)
 
@@ -32,7 +46,7 @@ The official Python SDK for the Yapp Voice AI API. Easily integrate speech-to-te
 Install from PyPI:
 
 ```bash
-pip install yapp
+pip install yappai
 ```
 
 Or install from source:
@@ -52,11 +66,11 @@ import yapp
 client = yapp.Yapp(api_key="your-api-key")
 
 # Transcribe audio to text
-transcription = client.audio.transcriptions.create("parakeet", "audio.wav")
+transcription = client.speech_to_text.convert("parakeet", "audio.wav")
 print(transcription.text)
 
 # Generate speech from text
-response = client.audio.speech.create("kokoro", "Hello world!")
+response = client.text_to_speech.convert("kokoro", "Hello world!")
 response.save("output.wav")
 ```
 
@@ -92,7 +106,7 @@ import yapp
 client = yapp.Yapp(api_key="your-api-key")
 
 # Transcribe an entire audio file using Parakeet
-response = client.audio.transcriptions.create("parakeet", "audio.wav")
+response = client.speech_to_text.convert("parakeet", "audio.wav")
 print(response.text)
 ```
 
@@ -100,7 +114,7 @@ print(response.text)
 
 ```python
 # Transcribe only a specific time range
-response = client.audio.transcriptions.create(
+response = client.speech_to_text.convert(
     "parakeet",   # Model (positional)
     "audio.wav",  # File (positional)
     start_time=3.0,  # Start at 3 seconds
@@ -115,19 +129,19 @@ The SDK automatically handles various audio formats:
 
 ```python
 # From file path (string)
-response = client.audio.transcriptions.create("parakeet", "audio.wav")
+response = client.speech_to_text.convert("parakeet", "audio.wav")
 
 # From pathlib.Path
 from pathlib import Path
-response = client.audio.transcriptions.create("parakeet", Path("audio.mp3"))
+response = client.speech_to_text.convert("parakeet", Path("audio.mp3"))
 
 # From file object
 with open("audio.wav", "rb") as f:
-    response = client.audio.transcriptions.create("parakeet", f)
+    response = client.speech_to_text.convert("parakeet", f)
 
 # From bytes
 audio_bytes = open("audio.wav", "rb").read()
-response = client.audio.transcriptions.create("parakeet", audio_bytes)
+response = client.speech_to_text.convert("parakeet", audio_bytes)
 ```
 
 ### Text-to-Speech (Synthesis)
@@ -142,14 +156,14 @@ import yapp
 client = yapp.Yapp(api_key="your-api-key")
 
 # Simple synthesis (uses defaults)
-response = client.audio.speech.create(
+response = client.text_to_speech.convert(
     "kokoro",  # Model first
     "Hello world!"
 )
 response.save("output.wav")
 
 # With custom voice and speed
-response = client.audio.speech.create(
+response = client.text_to_speech.convert(
     "kokoro",  # Model first
     "The quick brown fox jumps over the lazy dog.",
     voice="af_bella",  # Kokoro parameter
@@ -158,7 +172,7 @@ response = client.audio.speech.create(
 response.save("output_fast.wav")
 
 # Or use the kokoro() method directly
-response = client.audio.speech.kokoro(
+response = client.text_to_speech.kokoro(
     text="Direct method call",
     voice="af_bella",
     speed=0.8  # 20% slower
@@ -172,7 +186,7 @@ ResembleAI parameters: `audio_prompt`, `exaggeration`, `cfg_weight`
 
 ```python
 # Simple generation
-response = client.audio.speech.create(
+response = client.text_to_speech.convert(
     "resemble",  # Model first
     "Hello world!",
     exaggeration=0.5,  # Emotional intensity (0.0 - 1.0)
@@ -181,7 +195,7 @@ response = client.audio.speech.create(
 response.save("output.wav")
 
 # Voice cloning with audio prompt
-response = client.audio.speech.create(
+response = client.text_to_speech.convert(
     "resemble",  # Model first
     "This should sound like the reference voice.",
     audio_prompt="reference_voice.wav",  # Reference audio for cloning
@@ -190,7 +204,7 @@ response = client.audio.speech.create(
 response.save("cloned_voice.wav")
 
 # Highly expressive speech
-response = client.audio.speech.create(
+response = client.text_to_speech.convert(
     "resemble",  # Model first
     "Wow! This is amazing!",
     exaggeration=0.9,  # High emotional intensity
@@ -199,7 +213,7 @@ response = client.audio.speech.create(
 response.save("expressive.wav")
 
 # Or use the resemble() method directly
-response = client.audio.speech.resemble(
+response = client.text_to_speech.resemble(
     text="Direct method call",
     audio_prompt="reference.wav",
     exaggeration=0.7,
@@ -210,22 +224,30 @@ response.save("output.wav")
 
 #### Discovering Model Parameters
 
-The SDK provides methods to discover what parameters are available for each model:
+The SDK provides methods to discover what parameters are available for each TTS model:
 
 ```python
-# List all available models
-models = client.audio.speech.list_models()
+# Parakeet (STT) parameters
+# Model: parakeet
+# Parameters:
+#   - file (required): Audio file to transcribe
+#   - start_time (optional): Start time in seconds
+#   - end_time (optional): End time in seconds
+client.speech_to_text.convert("parakeet", "audio.wav", start_time=0, end_time=10)
+
+# List all available TTS models
+models = client.text_to_speech.list_models()
 print(models)  # ['kokoro', 'resemble']
 
-# Print help for a specific model
-client.audio.speech.print_model_help("kokoro")
+# Print help for a specific TTS model
+client.text_to_speech.print_model_help("kokoro")
 # Output:
 # Model: kokoro
 # Parameters:
 #   - voice (str, default='af_bella'): Voice to use for synthesis
 #   - speed (float, default=1.0): Speech speed multiplier (0.5 = half speed, 2.0 = double speed)
 
-client.audio.speech.print_model_help("resemble")
+client.text_to_speech.print_model_help("resemble")
 # Output:
 # Model: resemble
 # Parameters:
@@ -234,7 +256,7 @@ client.audio.speech.print_model_help("resemble")
 #   - cfg_weight (float, default=0.5): Adherence to reference voice, range 0.0-1.0
 
 # Get parameter specifications programmatically
-params = client.audio.speech.get_model_parameters("kokoro")
+params = client.text_to_speech.get_model_parameters("kokoro")
 for param_name, param_info in params.items():
     print(f"{param_name}: {param_info['description']}")
 ```
@@ -245,23 +267,23 @@ The SDK validates that you're using the correct parameters for each model:
 
 ```python
 # This works - correct Kokoro parameters
-response = client.audio.speech.create(
+response = client.text_to_speech.convert(
     "kokoro", "Hello", voice="af_bella", speed=1.2
 )
 
 # This raises ValidationError with helpful message
 try:
-    response = client.audio.speech.create(
+    response = client.text_to_speech.convert(
         "resemble", "Hello", speed=1.2  # ERROR!
     )
 except ValidationError as e:
     print(e)
     # Output: Unknown parameters for ResembleAI model: speed.
     #         Valid parameters: audio_prompt, exaggeration, cfg_weight
-    #         Use client.audio.speech.print_model_help('resemble') for more details.
+    #         Use client.text_to_speech.print_model_help('resemble') for more details.
 
 # This also raises ValidationError
-response = client.audio.speech.create(
+response = client.text_to_speech.convert(
     "kokoro", "Hello", exaggeration=0.5  # ERROR!
 )
 ```
@@ -270,7 +292,7 @@ response = client.audio.speech.create(
 
 ```python
 # Save to file
-response = client.audio.speech.create("kokoro", "Hello world!")
+response = client.text_to_speech.convert("kokoro", "Hello world!")
 response.save("output.wav")
 
 # Or use stream_to_file (alias for save)
@@ -295,11 +317,12 @@ Main client class for the Yapp API.
 - `timeout` (int, default=30): Request timeout in seconds
 
 **Properties:**
-- `audio`: Audio namespace containing transcription and speech resources
+- `speech_to_text`: Speech-to-text (STT) resource for audio transcription
+- `text_to_speech`: Text-to-speech (TTS) resource for audio synthesis
 
 ---
 
-### `client.audio.transcriptions.create()`
+### `client.speech_to_text.convert()`
 
 Transcribe audio to text using the Parakeet STT model.
 
@@ -313,7 +336,7 @@ Transcribe audio to text using the Parakeet STT model.
 **Example:**
 ```python
 # Both model and file are positional
-response = client.audio.transcriptions.create("parakeet", "audio.wav")
+response = client.speech_to_text.convert("parakeet", "audio.wav")
 ```
 
 **Available Models:**
@@ -327,7 +350,7 @@ response = client.audio.transcriptions.create("parakeet", "audio.wav")
 
 ---
 
-### `client.audio.speech.create()`
+### `client.text_to_speech.convert()`
 
 Generate speech from text. This is a unified interface that routes to the appropriate model.
 
@@ -352,12 +375,12 @@ Generate speech from text. This is a unified interface that routes to the approp
 **Examples:**
 ```python
 # Kokoro - model comes first!
-response = client.audio.speech.create(
+response = client.text_to_speech.convert(
     "kokoro", "Hello", voice="af_bella", speed=1.2
 )
 
 # ResembleAI - model comes first!
-response = client.audio.speech.create(
+response = client.text_to_speech.convert(
     "resemble", "Hello", exaggeration=0.7, cfg_weight=0.6
 )
 ```
@@ -366,7 +389,7 @@ response = client.audio.speech.create(
 
 ---
 
-### `client.audio.speech.list_models()`
+### `client.text_to_speech.list_models()`
 
 List all available TTS models.
 
@@ -374,13 +397,13 @@ List all available TTS models.
 
 **Example:**
 ```python
-models = client.audio.speech.list_models()
+models = client.text_to_speech.list_models()
 print(models)  # ['kokoro', 'resemble']
 ```
 
 ---
 
-### `client.audio.speech.get_model_parameters()`
+### `client.text_to_speech.get_model_parameters()`
 
 Get parameter specifications for a specific model.
 
@@ -391,14 +414,14 @@ Get parameter specifications for a specific model.
 
 **Example:**
 ```python
-params = client.audio.speech.get_model_parameters("kokoro")
+params = client.text_to_speech.get_model_parameters("kokoro")
 for name, info in params.items():
     print(f"{name}: {info['description']}")
 ```
 
 ---
 
-### `client.audio.speech.print_model_help()`
+### `client.text_to_speech.print_model_help()`
 
 Print helpful information about a model's parameters to console.
 
@@ -407,7 +430,7 @@ Print helpful information about a model's parameters to console.
 
 **Example:**
 ```python
-client.audio.speech.print_model_help("kokoro")
+client.text_to_speech.print_model_help("kokoro")
 # Prints:
 # Model: kokoro
 # Parameters:
@@ -417,7 +440,7 @@ client.audio.speech.print_model_help("kokoro")
 
 ---
 
-### `client.audio.speech.kokoro()`
+### `client.text_to_speech.kokoro()`
 
 Generate speech using the Kokoro-82M model.
 
@@ -430,7 +453,7 @@ Generate speech using the Kokoro-82M model.
 
 ---
 
-### `client.audio.speech.resemble()`
+### `client.text_to_speech.resemble()`
 
 Generate speech using ResembleAI Chatterbox with voice cloning.
 
@@ -475,7 +498,7 @@ import yapp
 client = yapp.Yapp(api_key="your-api-key")
 
 # 1. Transcribe audio
-transcription = client.audio.transcriptions.create(
+transcription = client.speech_to_text.convert(
     "parakeet",      # Model (positional)
     "original.wav",  # File (positional)
     start_time=0,
@@ -487,13 +510,13 @@ print(f"Original: {transcription.text}")
 modified_text = transcription.text.upper()
 
 # 3. Generate new speech with Kokoro
-response = client.audio.speech.create(
+response = client.text_to_speech.convert(
     "kokoro", modified_text, voice="af_bella", speed=1.0
 )
 response.save("output_kokoro.wav")
 
 # 4. Clone voice from original audio
-cloned = client.audio.speech.create(
+cloned = client.text_to_speech.convert(
     "resemble", "New text in the original voice",
     audio_prompt="original.wav", cfg_weight=0.9
 )
@@ -508,7 +531,7 @@ The SDK provides specific exception types for different error scenarios:
 from yapp import YappError, APIError, AuthenticationError, ValidationError
 
 try:
-    response = client.audio.speech.create(text="Hello world!")
+    response = client.text_to_speech.convert(text="Hello world!")
     response.save("output.wav")
 except AuthenticationError as e:
     print(f"Authentication failed: {e}")
