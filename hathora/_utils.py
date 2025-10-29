@@ -4,7 +4,7 @@ from typing import Union, BinaryIO, Tuple
 from pathlib import Path
 import mimetypes
 
-from yapp.exceptions import FileError
+from hathora.exceptions import FileError
 
 
 def prepare_audio_file(file: Union[str, Path, BinaryIO, bytes]) -> Tuple[BinaryIO, str]:

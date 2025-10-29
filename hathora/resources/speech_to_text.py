@@ -3,9 +3,9 @@
 from typing import Optional, Union
 from pathlib import Path
 
-from yapp.types import AudioFile, TranscriptionResponse
-from yapp._utils import prepare_audio_file
-from yapp.exceptions import APIError, ValidationError
+from hathora.types import AudioFile, TranscriptionResponse
+from hathora._utils import prepare_audio_file
+from hathora.exceptions import APIError, ValidationError
 
 
 class SpeechToText:

@@ -1,6 +1,6 @@
-# Yapp Python SDK
+# Hathora Python SDK
 
-The official Python SDK for the Yapp Voice AI API. Easily integrate speech-to-text (STT) and text-to-speech (TTS) capabilities into your Python applications.
+The official Python SDK for the Hathora Voice AI API. Easily integrate speech-to-text (STT) and text-to-speech (TTS) capabilities into your Python applications.
 
 ## Features
 
@@ -46,13 +46,13 @@ client.speech_to_text.convert("parakeet", "audio.wav", start_time=3.0, end_time=
 Install from PyPI:
 
 ```bash
-pip install yapp
+pip install hathora
 ```
 
 Or install from source:
 
 ```bash
-git clone https://github.com/yourusername/yapp-sdk.git
+git clone https://github.com/hathora/yapp-sdk.git
 cd yapp-sdk
 pip install -e .
 ```
@@ -60,10 +60,10 @@ pip install -e .
 ## Quick Start
 
 ```python
-import yapp
+import hathora
 
 # Initialize the client
-client = yapp.Yapp(api_key="your-api-key")
+client = hathora.Hathora(api_key="your-api-key")
 
 # Transcribe audio to text
 transcription = client.speech_to_text.convert("parakeet", "audio.wav")
@@ -80,16 +80,16 @@ You can provide your API key in two ways:
 
 ### 1. Pass it directly to the client:
 ```python
-client = yapp.Yapp(api_key="your-api-key")
+client = hathora.Hathora(api_key="your-api-key")
 ```
 
 ### 2. Set it as an environment variable:
 ```bash
-export YAPP_API_KEY="your-api-key"
+export HATHORA_API_KEY="your-api-key"
 ```
 
 ```python
-client = yapp.Yapp()  # Will use YAPP_API_KEY from environment
+client = hathora.Hathora()  # Will use HATHORA_API_KEY from environment
 ```
 
 ## Usage Examples
@@ -101,9 +101,9 @@ client = yapp.Yapp()  # Will use YAPP_API_KEY from environment
 The SDK uses the **Parakeet** multilingual STT model for transcription.
 
 ```python
-import yapp
+import hathora
 
-client = yapp.Yapp(api_key="your-api-key")
+client = hathora.Hathora(api_key="your-api-key")
 
 # Transcribe an entire audio file using Parakeet
 response = client.speech_to_text.convert("parakeet", "audio.wav")
@@ -151,9 +151,9 @@ response = client.speech_to_text.convert("parakeet", audio_bytes)
 Kokoro parameters: `voice`, `speed`
 
 ```python
-import yapp
+import hathora
 
-client = yapp.Yapp(api_key="your-api-key")
+client = hathora.Hathora(api_key="your-api-key")
 
 # Simple synthesis (uses defaults)
 response = client.text_to_speech.convert(
@@ -308,12 +308,12 @@ print(response.content_type)  # e.g., "audio/wav"
 
 ## API Reference
 
-### `yapp.Yapp`
+### `hathora.Hathora`
 
-Main client class for the Yapp API.
+Main client class for the Hathora API.
 
 **Parameters:**
-- `api_key` (str, optional): Your Yapp API key
+- `api_key` (str, optional): Your Hathora API key
 - `timeout` (int, default=30): Request timeout in seconds
 
 **Properties:**
@@ -492,10 +492,10 @@ Response object containing transcribed text.
 ## Complete Workflow Example
 
 ```python
-import yapp
+import hathora
 
 # Initialize client
-client = yapp.Yapp(api_key="your-api-key")
+client = hathora.Hathora(api_key="your-api-key")
 
 # 1. Transcribe audio
 transcription = client.speech_to_text.convert(
@@ -528,10 +528,10 @@ cloned.save("cloned_voice.wav")
 The SDK provides specific exception types for different error scenarios:
 
 ```python
-from yapp import YappError, APIError, AuthenticationError, ValidationError
+from yapp import HathoraError, APIError, AuthenticationError, ValidationError
 
 try:
-    response = client.text_to_speech.convert(text="Hello world!")
+    response = client.text_to_speech.convert("kokoro", "Hello world!")
     response.save("output.wav")
 except AuthenticationError as e:
     print(f"Authentication failed: {e}")
@@ -539,8 +539,8 @@ except ValidationError as e:
     print(f"Invalid parameters: {e}")
 except APIError as e:
     print(f"API error (status {e.status_code}): {e.message}")
-except YappError as e:
-    print(f"Yapp SDK error: {e}")
+except HathoraError as e:
+    print(f"Hathora SDK error: {e}")
 ```
 
 ## Supported Audio Formats
@@ -573,7 +573,7 @@ python full_workflow.py         # Complete workflow
 ### Installing for Development
 
 ```bash
-git clone https://github.com/yourusername/yapp-sdk.git
+git clone https://github.com/hathora/yapp-sdk.git
 cd yapp-sdk
 pip install -e .
 ```
@@ -598,6 +598,6 @@ MIT License - see LICENSE file for details.
 ## Support
 
 For issues and questions:
-- GitHub Issues: https://github.com/yourusername/yapp-sdk/issues
-- Documentation: https://docs.yapp.ai
-- Email: support@yapp.ai
+- GitHub Issues: https://github.com/hathora/yapp-sdk/issues
+- Documentation: https://docs.hathora.com
+- Email: support@hathora.com

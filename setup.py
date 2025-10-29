@@ -1,5 +1,5 @@
 """
-Setup script for Yapp Python SDK
+Setup script for Hathora Python SDK
 
 For modern Python packaging, use pyproject.toml instead.
 This setup.py is maintained for backwards compatibility.
@@ -13,18 +13,18 @@ readme_file = Path(__file__).parent / "README.md"
 long_description = readme_file.read_text(encoding="utf-8")
 
 setup(
-    name="yapp",  # Package name on PyPI - install with: pip install yapp
-    version="0.2.0",
-    author="Yapp",
-    author_email="support@yapp.ai",
-    description="Python SDK for Yapp Voice AI API - Speech-to-Text and Text-to-Speech",
+    name="hathora",  # Package name on PyPI - install with: pip install hathora
+    version="0.3.0",
+    author="Hathora",
+    author_email="support@hathora.com",
+    description="Python SDK for Hathora Voice AI API - Speech-to-Text and Text-to-Speech",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/yapp-sdk",
+    url="https://github.com/hathora/yapp-sdk",
     project_urls={
-        "Documentation": "https://github.com/yourusername/yapp-sdk#readme",
-        "Bug Tracker": "https://github.com/yourusername/yapp-sdk/issues",
-        "Source Code": "https://github.com/yourusername/yapp-sdk",
+        "Documentation": "https://github.com/hathora/yapp-sdk#readme",
+        "Bug Tracker": "https://github.com/hathora/yapp-sdk/issues",
+        "Source Code": "https://github.com/hathora/yapp-sdk",
     },
     packages=find_packages(exclude=["tests", "tests.*", "examples", "examples.*"]),
     classifiers=[
