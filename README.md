@@ -52,7 +52,7 @@ pip install yapp
 Or install from source:
 
 ```bash
-git clone https://github.com/yourusername/yapp-sdk.git
+git clone https://github.com/hathora/yapp-sdk.git
 cd yapp-sdk
 pip install -e .
 ```
@@ -531,7 +531,7 @@ The SDK provides specific exception types for different error scenarios:
 from yapp import YappError, APIError, AuthenticationError, ValidationError
 
 try:
-    response = client.text_to_speech.convert(text="Hello world!")
+    response = client.text_to_speech.convert("kokoro", "Hello world!")
     response.save("output.wav")
 except AuthenticationError as e:
     print(f"Authentication failed: {e}")
@@ -573,7 +573,7 @@ python full_workflow.py         # Complete workflow
 ### Installing for Development
 
 ```bash
-git clone https://github.com/yourusername/yapp-sdk.git
+git clone https://github.com/hathora/yapp-sdk.git
 cd yapp-sdk
 pip install -e .
 ```
@@ -598,6 +598,6 @@ MIT License - see LICENSE file for details.
 ## Support
 
 For issues and questions:
-- GitHub Issues: https://github.com/yourusername/yapp-sdk/issues
+- GitHub Issues: https://github.com/hathora/yapp-sdk/issues
 - Documentation: https://docs.yapp.ai
 - Email: support@yapp.ai
