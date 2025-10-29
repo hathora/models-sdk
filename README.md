@@ -46,7 +46,7 @@ client.speech_to_text.convert("parakeet", "audio.wav", start_time=3.0, end_time=
 Install from PyPI:
 
 ```bash
-pip install yapp
+pip install hathora
 ```
 
 Or install from source:

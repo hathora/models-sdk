@@ -13,7 +13,7 @@ readme_file = Path(__file__).parent / "README.md"
 long_description = readme_file.read_text(encoding="utf-8")
 
 setup(
-    name="yapp",  # Package name on PyPI - install with: pip install yapp (imports as hathora)
+    name="hathora",  # Package name on PyPI - install with: pip install hathora
     version="0.3.0",
     author="Hathora",
     author_email="support@hathora.com",

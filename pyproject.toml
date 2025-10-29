@@ -3,9 +3,9 @@ requires = ["setuptools>=45", "wheel", "setuptools_scm>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "yapp"
+name = "hathora"
 version = "0.3.0"
-description = "Python SDK for Hathora Voice AI API - Speech-to-Text and Text-to-Speech (pip install yapp, import hathora)"
+description = "Python SDK for Hathora Voice AI API - Speech-to-Text and Text-to-Speech"
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
