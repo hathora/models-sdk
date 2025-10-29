@@ -1,12 +1,12 @@
-"""Yapp SDK Exceptions"""
+"""Hathora SDK Exceptions"""
 
 
-class YappError(Exception):
-    """Base exception for all Yapp SDK errors"""
+class HathoraError(Exception):
+    """Base exception for all Hathora SDK errors"""
     pass
 
 
-class APIError(YappError):
+class APIError(HathoraError):
     """Raised when the API returns an error response"""
 
     def __init__(self, message: str, status_code: int = None, response: dict = None):
@@ -16,16 +16,16 @@ class APIError(YappError):
         super().__init__(self.message)
 
 
-class AuthenticationError(YappError):
+class AuthenticationError(HathoraError):
     """Raised when authentication fails"""
     pass
 
 
-class ValidationError(YappError):
+class ValidationError(HathoraError):
     """Raised when request validation fails"""
     pass
 
 
-class FileError(YappError):
+class FileError(HathoraError):
     """Raised when there's an issue with file handling"""
     pass

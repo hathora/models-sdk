@@ -5,10 +5,10 @@ This example demonstrates how to use the Yapp SDK to generate
 speech with voice cloning capabilities using the ResembleAI model.
 """
 
-import yapp
+import hathora
 
 # Initialize the client
-client = yapp.Yapp(api_key="your-api-key-here")
+client = hathora.Yapp(api_key="your-api-key-here")
 
 # Example 1: Simple generation with ResembleAI
 print("Example 1: Simple ResembleAI generation")

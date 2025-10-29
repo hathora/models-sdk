@@ -5,10 +5,10 @@ This example demonstrates the different parameters for each TTS model
 and how to use them correctly.
 """
 
-import yapp
+import hathora
 
 # Initialize the client
-client = yapp.Yapp(api_key="your-api-key-here")
+client = hathora.Yapp(api_key="your-api-key-here")
 
 print("=== Model-Specific Parameters Demo ===\n")
 
@@ -159,7 +159,7 @@ try:
         "This will fail",
         speed=1.5  # ERROR: speed is Kokoro parameter!
     )
-except yapp.ValidationError as e:
+except hathora.ValidationError as e:
     print(f"  ✗ Error (as expected): {e}")
 print()
 
@@ -170,7 +170,7 @@ try:
         "This will fail",
         exaggeration=0.5  # ERROR: exaggeration is ResembleAI parameter!
     )
-except yapp.ValidationError as e:
+except hathora.ValidationError as e:
     print(f"  ✗ Error (as expected): {e}")
 print()
 

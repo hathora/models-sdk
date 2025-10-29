@@ -5,10 +5,10 @@ This example demonstrates how to use the Yapp SDK to transcribe
 audio files to text.
 """
 
-import yapp
+import hathora
 
 # Initialize the client
-client = yapp.Yapp(api_key="your-api-key-here")
+client = hathora.Yapp(api_key="your-api-key-here")
 
 # Example 1: Simple transcription
 print("Example 1: Simple transcription with Parakeet")

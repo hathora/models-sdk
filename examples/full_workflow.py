@@ -7,10 +7,10 @@ This example demonstrates a complete workflow:
 3. Generate new speech from the modified text
 """
 
-import yapp
+import hathora
 
 # Initialize the client
-client = yapp.Yapp(api_key="your-api-key-here")
+client = hathora.Yapp(api_key="your-api-key-here")
 
 print("=== Complete Yapp SDK Workflow ===\n")
 

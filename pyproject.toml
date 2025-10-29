@@ -4,16 +4,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "yapp"
-version = "0.2.0"
-description = "Python SDK for Yapp Voice AI API - Speech-to-Text and Text-to-Speech"
+version = "0.3.0"
+description = "Python SDK for Hathora Voice AI API - Speech-to-Text and Text-to-Speech (pip install yapp, import hathora)"
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
-    {name = "Yapp", email = "support@yapp.ai"}
+    {name = "Hathora", email = "support@hathora.com"}
 ]
 maintainers = [
-    {name = "Yapp", email = "support@yapp.ai"}
+    {name = "Hathora", email = "support@hathora.com"}
 ]
 keywords = [
     "voice",
@@ -57,18 +57,18 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/yapp-sdk"
-Documentation = "https://github.com/yourusername/yapp-sdk#readme"
-Repository = "https://github.com/yourusername/yapp-sdk"
-"Bug Tracker" = "https://github.com/yourusername/yapp-sdk/issues"
+Homepage = "https://github.com/hathora/yapp-sdk"
+Documentation = "https://github.com/hathora/yapp-sdk#readme"
+Repository = "https://github.com/hathora/yapp-sdk"
+"Bug Tracker" = "https://github.com/hathora/yapp-sdk/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["yapp*"]
+include = ["hathora*"]
 exclude = ["tests*", "examples*"]
 
 [tool.setuptools.package-data]
-yapp = ["py.typed"]
+hathora = ["py.typed"]
 
 [tool.black]
 line-length = 100
