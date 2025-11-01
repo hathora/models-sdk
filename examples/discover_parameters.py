@@ -5,10 +5,10 @@ This example demonstrates how to discover what parameters are available
 for each model using the SDK's built-in help methods.
 """
 
-import yapp
+import hathora
 
 # Initialize the client
-client = yapp.Yapp(api_key="your-api-key-here")
+client = hathora.Yapp(api_key="your-api-key-here")
 
 print("=== Model Parameter Discovery ===\n")
 
@@ -72,7 +72,7 @@ try:
         "This will fail",
         exaggeration=0.5  # ERROR: This is a ResembleAI parameter!
     )
-except yapp.ValidationError as e:
+except hathora.ValidationError as e:
     print(f"Error caught: {e}\n")
 
 try:
@@ -82,7 +82,7 @@ try:
         "This will fail",
         speed=1.5  # ERROR: This is a Kokoro parameter!
     )
-except yapp.ValidationError as e:
+except hathora.ValidationError as e:
     print(f"Error caught: {e}\n")
 
 try:
@@ -91,7 +91,7 @@ try:
         "unknown_model",  # Model first - ERROR: Model doesn't exist!
         "This will fail"
     )
-except yapp.ValidationError as e:
+except hathora.ValidationError as e:
     print(f"Error caught: {e}\n")
 
 # ============================================================================

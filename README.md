@@ -1,14 +1,18 @@
-# Yapp Python SDK
+# Hathora Python SDK
 
-The official Python SDK for the Yapp Voice AI API. Easily integrate speech-to-text (STT) and text-to-speech (TTS) capabilities into your Python applications.
+The official Python SDK for the Hathora AI API. Easily integrate speech-to-text (STT), text-to-speech (TTS), and large language models (LLM) into your Python applications.
 
 ## Features
 
 - **Simple, intuitive API** - Clean, Pythonic interface
-- **Multiple TTS models** - Kokoro-82M and ResembleAI Chatterbox
+- **Multiple AI models**:
+  - **TTS**: Kokoro-82M and ResembleAI Chatterbox
+  - **STT**: Parakeet multilingual transcription
+  - **LLM**: Qwen3-30B for chat completions
 - **Model-specific parameters** - Each model has its own unique parameters with validation
 - **Voice cloning** with ResembleAI's audio prompt feature
 - **Flexible audio handling** - Works with file paths, file objects, or raw bytes
+- **Chat completions** with message history and temperature control
 - **Type hints** for better IDE support
 - **Comprehensive error handling**
 
@@ -46,13 +50,13 @@ client.speech_to_text.convert("parakeet", "audio.wav", start_time=3.0, end_time=
 Install from PyPI:
 
 ```bash
-pip install yappai
+pip install hathora
 ```
 
 Or install from source:
 
 ```bash
-git clone https://github.com/yourusername/yapp-sdk.git
+git clone https://github.com/hathora/yapp-sdk.git
 cd yapp-sdk
 pip install -e .
 ```
@@ -60,10 +64,10 @@ pip install -e .
 ## Quick Start
 
 ```python
-import yapp
+import hathora
 
 # Initialize the client
-client = yapp.Yapp(api_key="your-api-key")
+client = hathora.Hathora(api_key="your-api-key")
 
 # Transcribe audio to text
 transcription = client.speech_to_text.convert("parakeet", "audio.wav")
@@ -80,16 +84,16 @@ You can provide your API key in two ways:
 
 ### 1. Pass it directly to the client:
 ```python
-client = yapp.Yapp(api_key="your-api-key")
+client = hathora.Hathora(api_key="your-api-key")
 ```
 
 ### 2. Set it as an environment variable:
 ```bash
-export YAPP_API_KEY="your-api-key"
+export HATHORA_API_KEY="your-api-key"
 ```
 
 ```python
-client = yapp.Yapp()  # Will use YAPP_API_KEY from environment
+client = hathora.Hathora()  # Will use HATHORA_API_KEY from environment
 ```
 
 ## Usage Examples
@@ -101,9 +105,9 @@ client = yapp.Yapp()  # Will use YAPP_API_KEY from environment
 The SDK uses the **Parakeet** multilingual STT model for transcription.
 
 ```python
-import yapp
+import hathora
 
-client = yapp.Yapp(api_key="your-api-key")
+client = hathora.Hathora(api_key="your-api-key")
 
 # Transcribe an entire audio file using Parakeet
 response = client.speech_to_text.convert("parakeet", "audio.wav")
@@ -151,9 +155,9 @@ response = client.speech_to_text.convert("parakeet", audio_bytes)
 Kokoro parameters: `voice`, `speed`
 
 ```python
-import yapp
+import hathora
 
-client = yapp.Yapp(api_key="your-api-key")
+client = hathora.Hathora(api_key="your-api-key")
 
 # Simple synthesis (uses defaults)
 response = client.text_to_speech.convert(
@@ -306,14 +310,126 @@ print(f"Generated {len(audio_bytes)} bytes")
 print(response.content_type)  # e.g., "audio/wav"
 ```
 
+### Large Language Models (LLM)
+
+The SDK supports chat completions with Qwen and other LLMs.
+
+#### Setting up LLM Endpoint
+
+```python
+import hathora
+
+client = hathora.Hathora(api_key="your-api-key")
+
+# Configure your LLM endpoint
+client.llm.set_endpoint("https://your-app.app.hathora.dev")
+```
+
+#### Simple Chat
+
+```python
+# Simple question
+response = client.llm.chat("qwen", "What is Python?")
+print(response.content)
+```
+
+#### Chat with Message History
+
+```python
+# Conversation with context
+messages = [
+    {"role": "user", "content": "Hello! Can you help me with programming?"},
+    {"role": "assistant", "content": "Of course! I'd be happy to help."},
+    {"role": "user", "content": "What's the difference between a list and tuple?"}
+]
+
+response = client.llm.chat(
+    "qwen",
+    messages,
+    max_tokens=500,
+    temperature=0.7
+)
+print(response.content)
+```
+
+#### Controlling Output
+
+```python
+# Creative output (higher temperature)
+response = client.llm.chat(
+    "qwen",
+    "Write a poem about AI",
+    temperature=0.9,
+    max_tokens=200
+)
+
+# Precise output (lower temperature)
+response = client.llm.chat(
+    "qwen",
+    "Calculate 15 * 23",
+    temperature=0.1,
+    max_tokens=50
+)
+```
+
+#### Using ChatMessage Objects
+
+```python
+from hathora.resources.llm import ChatMessage
+
+conversation = [
+    ChatMessage("system", "You are a helpful coding assistant."),
+    ChatMessage("user", "How do I read a file in Python?")
+]
+
+response = client.llm.chat("qwen", conversation)
+print(response.content)
+```
+
+#### Response Properties
+
+```python
+response = client.llm.chat("qwen", "Explain machine learning")
+
+# Get the response text
+print(response.content)
+
+# Get the full message object
+print(response.message)
+
+# Get token usage info
+print(response.usage)
+
+# Get the model used
+print(response.model)
+
+# Get raw response data
+print(response.raw)
+```
+
+#### Available Models
+
+```python
+# List all LLM models
+models = client.llm.list_models()
+print(models)  # ['qwen']
+
+# Get model info
+info = client.llm.get_model_info("qwen")
+print(info)
+
+# Print model help
+client.llm.print_model_help("qwen")
+```
+
 ## API Reference
 
-### `yapp.Yapp`
+### `hathora.Hathora`
 
-Main client class for the Yapp API.
+Main client class for the Hathora API.
 
 **Parameters:**
-- `api_key` (str, optional): Your Yapp API key
+- `api_key` (str, optional): Your Hathora API key
 - `timeout` (int, default=30): Request timeout in seconds
 
 **Properties:**
@@ -492,10 +608,10 @@ Response object containing transcribed text.
 ## Complete Workflow Example
 
 ```python
-import yapp
+import hathora
 
 # Initialize client
-client = yapp.Yapp(api_key="your-api-key")
+client = hathora.Hathora(api_key="your-api-key")
 
 # 1. Transcribe audio
 transcription = client.speech_to_text.convert(
@@ -528,10 +644,10 @@ cloned.save("cloned_voice.wav")
 The SDK provides specific exception types for different error scenarios:
 
 ```python
-from yapp import YappError, APIError, AuthenticationError, ValidationError
+from yapp import HathoraError, APIError, AuthenticationError, ValidationError
 
 try:
-    response = client.text_to_speech.convert(text="Hello world!")
+    response = client.text_to_speech.convert("kokoro", "Hello world!")
     response.save("output.wav")
 except AuthenticationError as e:
     print(f"Authentication failed: {e}")
@@ -539,8 +655,8 @@ except ValidationError as e:
     print(f"Invalid parameters: {e}")
 except APIError as e:
     print(f"API error (status {e.status_code}): {e.message}")
-except YappError as e:
-    print(f"Yapp SDK error: {e}")
+except HathoraError as e:
+    print(f"Hathora SDK error: {e}")
 ```
 
 ## Supported Audio Formats
@@ -573,7 +689,7 @@ python full_workflow.py         # Complete workflow
 ### Installing for Development
 
 ```bash
-git clone https://github.com/yourusername/yapp-sdk.git
+git clone https://github.com/hathora/yapp-sdk.git
 cd yapp-sdk
 pip install -e .
 ```
@@ -598,6 +714,6 @@ MIT License - see LICENSE file for details.
 ## Support
 
 For issues and questions:
-- GitHub Issues: https://github.com/yourusername/yapp-sdk/issues
-- Documentation: https://docs.yapp.ai
-- Email: support@yapp.ai
+- GitHub Issues: https://github.com/hathora/yapp-sdk/issues
+- Documentation: https://docs.hathora.com
+- Email: support@hathora.com

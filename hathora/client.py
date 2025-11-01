@@ -1,26 +1,30 @@
-"""Yapp SDK Client"""
+"""Hathora SDK Client"""
 
 from typing import Optional, Dict, Any
 import requests
 
-from yapp.resources.speech_to_text import SpeechToText
-from yapp.resources.text_to_speech import TextToSpeech
-from yapp.exceptions import APIError, AuthenticationError
+from hathora.resources.speech_to_text import SpeechToText
+from hathora.resources.text_to_speech import TextToSpeech
+from hathora.resources.llm import LLM
+from hathora.exceptions import APIError, AuthenticationError
 
 
-class Yapp:
+class Hathora:
     """
-    Main client for the Yapp Voice AI API.
+    Main client for the Hathora AI API.
 
-    This client provides access to speech-to-text and text-to-speech capabilities.
+    This client provides access to:
+    - Speech-to-text (transcription)
+    - Text-to-speech (synthesis)
+    - Large Language Models (chat completions)
 
     Args:
-        api_key: Your Yapp API key (optional, can also be set via environment variable)
+        api_key: Your Hathora API key (optional, can also be set via environment variable)
         timeout: Request timeout in seconds (default: 30)
 
     Example:
-        >>> import yapp
-        >>> client = yapp.Yapp(api_key="your-api-key")
+        >>> import hathora
+        >>> client = hathora.Hathora(api_key="your-api-key")
         >>>
         >>> # Transcribe audio
         >>> response = client.speech_to_text.convert("parakeet", "audio.wav")
@@ -29,6 +33,11 @@ class Yapp:
         >>> # Generate speech
         >>> response = client.text_to_speech.convert("kokoro", "Hello world")
         >>> response.save("output.wav")
+        >>>
+        >>> # Chat with LLM
+        >>> client.llm.set_endpoint("https://your-app.app.hathora.dev")
+        >>> response = client.llm.chat("qwen", "What is AI?")
+        >>> print(response.content)
     """
 
     def __init__(
@@ -42,11 +51,12 @@ class Yapp:
         # Initialize resources
         self.speech_to_text = SpeechToText(self)
         self.text_to_speech = TextToSpeech(self)
+        self.llm = LLM(self)
 
     def _get_api_key_from_env(self) -> Optional[str]:
         """Get API key from environment variable"""
         import os
-        return os.environ.get("YAPP_API_KEY")
+        return os.environ.get("HATHORA_API_KEY")
 
     def _request(
         self,
@@ -59,7 +69,7 @@ class Yapp:
         data: Optional[Dict[str, Any]] = None,
     ) -> Any:
         """
-        Make an HTTP request to the Yapp API.
+        Make an HTTP request to the Hathora API.
 
         Args:
             method: HTTP method (GET, POST, etc.)
@@ -138,6 +148,6 @@ class Yapp:
 
 
 # Convenience aliases for simpler imports
-class YappClient(Yapp):
-    """Alias for Yapp client"""
+class HathoraClient(Hathora):
+    """Alias for Hathora client"""
     pass
