@@ -1,14 +1,18 @@
 # Hathora Python SDK
 
-The official Python SDK for the Hathora Voice AI API. Easily integrate speech-to-text (STT) and text-to-speech (TTS) capabilities into your Python applications.
+The official Python SDK for the Hathora AI API. Easily integrate speech-to-text (STT), text-to-speech (TTS), and large language models (LLM) into your Python applications.
 
 ## Features
 
 - **Simple, intuitive API** - Clean, Pythonic interface
-- **Multiple TTS models** - Kokoro-82M and ResembleAI Chatterbox
+- **Multiple AI models**:
+  - **TTS**: Kokoro-82M and ResembleAI Chatterbox
+  - **STT**: Parakeet multilingual transcription
+  - **LLM**: Qwen3-30B for chat completions
 - **Model-specific parameters** - Each model has its own unique parameters with validation
 - **Voice cloning** with ResembleAI's audio prompt feature
 - **Flexible audio handling** - Works with file paths, file objects, or raw bytes
+- **Chat completions** with message history and temperature control
 - **Type hints** for better IDE support
 - **Comprehensive error handling**
 
@@ -304,6 +308,118 @@ print(f"Generated {len(audio_bytes)} bytes")
 
 # Check content type
 print(response.content_type)  # e.g., "audio/wav"
+```
+
+### Large Language Models (LLM)
+
+The SDK supports chat completions with Qwen and other LLMs.
+
+#### Setting up LLM Endpoint
+
+```python
+import hathora
+
+client = hathora.Hathora(api_key="your-api-key")
+
+# Configure your LLM endpoint
+client.llm.set_endpoint("https://your-app.app.hathora.dev")
+```
+
+#### Simple Chat
+
+```python
+# Simple question
+response = client.llm.chat("qwen", "What is Python?")
+print(response.content)
+```
+
+#### Chat with Message History
+
+```python
+# Conversation with context
+messages = [
+    {"role": "user", "content": "Hello! Can you help me with programming?"},
+    {"role": "assistant", "content": "Of course! I'd be happy to help."},
+    {"role": "user", "content": "What's the difference between a list and tuple?"}
+]
+
+response = client.llm.chat(
+    "qwen",
+    messages,
+    max_tokens=500,
+    temperature=0.7
+)
+print(response.content)
+```
+
+#### Controlling Output
+
+```python
+# Creative output (higher temperature)
+response = client.llm.chat(
+    "qwen",
+    "Write a poem about AI",
+    temperature=0.9,
+    max_tokens=200
+)
+
+# Precise output (lower temperature)
+response = client.llm.chat(
+    "qwen",
+    "Calculate 15 * 23",
+    temperature=0.1,
+    max_tokens=50
+)
+```
+
+#### Using ChatMessage Objects
+
+```python
+from hathora.resources.llm import ChatMessage
+
+conversation = [
+    ChatMessage("system", "You are a helpful coding assistant."),
+    ChatMessage("user", "How do I read a file in Python?")
+]
+
+response = client.llm.chat("qwen", conversation)
+print(response.content)
+```
+
+#### Response Properties
+
+```python
+response = client.llm.chat("qwen", "Explain machine learning")
+
+# Get the response text
+print(response.content)
+
+# Get the full message object
+print(response.message)
+
+# Get token usage info
+print(response.usage)
+
+# Get the model used
+print(response.model)
+
+# Get raw response data
+print(response.raw)
+```
+
+#### Available Models
+
+```python
+# List all LLM models
+models = client.llm.list_models()
+print(models)  # ['qwen']
+
+# Get model info
+info = client.llm.get_model_info("qwen")
+print(info)
+
+# Print model help
+client.llm.print_model_help("qwen")
 ```
 
 ## API Reference

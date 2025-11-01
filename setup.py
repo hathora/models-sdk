@@ -14,7 +14,7 @@ long_description = readme_file.read_text(encoding="utf-8")
 
 setup(
     name="hathora",  # Package name on PyPI - install with: pip install hathora
-    version="0.3.0",
+    version="0.4.0",
     author="Hathora",
     author_email="support@hathora.com",
     description="Python SDK for Hathora Voice AI API - Speech-to-Text and Text-to-Speech",
