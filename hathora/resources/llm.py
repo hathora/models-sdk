@@ -73,6 +73,9 @@ class LLM:
         }
     }
 
+    # Base URL for Hathora LLM models
+    BASE_URL = "https://models.hathora.dev"
+
     def __init__(self, client):
         """
         Initialize LLM resource.
@@ -81,16 +84,6 @@ class LLM:
             client: The Hathora client instance
         """
         self.client = client
-        self._base_url = None
-
-    def set_endpoint(self, base_url: str):
-        """
-        Set the LLM endpoint URL.
-
-        Args:
-            base_url: Base URL for the LLM API (e.g., "https://app-xxx.app.hathora.dev")
-        """
-        self._base_url = base_url.rstrip('/')
 
     def chat(
         self,
@@ -131,11 +124,6 @@ class LLM:
             >>> response = client.llm.chat("qwen", messages)
         """
         from hathora.exceptions import ValidationError
-
-        if not self._base_url:
-            raise ValidationError(
-                "LLM endpoint not configured. Use client.llm.set_endpoint('https://your-app.app.hathora.dev') first."
-            )
 
         # Validate model
         if model not in self.AVAILABLE_MODELS:
@@ -181,8 +169,10 @@ class LLM:
         # Add any additional parameters
         payload.update(kwargs)
 
-        # Make API request
-        url = f"{self._base_url}/v1/chat/completions"
+        # Build URL for the specific model
+        # For qwen: https://models.hathora.dev/model/qwen3-30b-a3b/v1/chat/completions
+        model_path = self.AVAILABLE_MODELS[model]["name"].lower().replace("/", "-").replace("_", "-")
+        url = f"{self.BASE_URL}/model/{model_path}/v1/chat/completions"
 
         response_data = self.client._request(
             method="POST",

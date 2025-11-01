@@ -8,14 +8,10 @@ import hathora
 import os
 
 # Initialize the client
+# The LLM uses the same API key as other Hathora services
 client = hathora.Hathora(
     api_key=os.environ.get("HATHORA_API_KEY", "your-api-key-here")
 )
-
-# Configure the LLM endpoint
-# Replace with your actual Hathora app endpoint
-LLM_ENDPOINT = "https://app-362f7ca1-6975-4e18-a605-ab202bf2c315.app.hathora.dev"
-client.llm.set_endpoint(LLM_ENDPOINT)
 
 print("=" * 60)
 print("Hathora LLM Chat Examples")

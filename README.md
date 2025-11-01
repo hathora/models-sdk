@@ -45,6 +45,32 @@ client.speech_to_text.convert("parakeet", "audio.wav", start_time=3.0, end_time=
 | | `exaggeration` | Emotional intensity: 0.0-1.0 (default: 0.5) |
 | | `cfg_weight` | Adherence to reference voice: 0.0-1.0 (default: 0.5) |
 
+### Large Language Models (LLM)
+
+| Model | Parameters | Description |
+|-------|-----------|-------------|
+| **Qwen** | `messages` | Chat messages (string or list of message dicts) |
+| | `max_tokens` | Maximum tokens to generate (default: 1000) |
+| | `temperature` | Sampling temperature 0.0-1.0 (default: 0.7) |
+| | `top_p` | Nucleus sampling parameter (optional) |
+
+**Example:**
+```python
+# Simple chat - uses https://models.hathora.dev/model/qwen3-30b-a3b
+response = client.llm.chat("qwen", "What is Python?")
+print(response.content)
+
+# With parameters
+response = client.llm.chat(
+    "qwen",
+    "Write a poem about AI",
+    max_tokens=200,
+    temperature=0.9
+)
+```
+
+**Full Model Name:** Qwen/Qwen3-30B-A3B
+
 ## Installation
 
 Install from PyPI:
@@ -76,6 +102,10 @@ print(transcription.text)
 # Generate speech from text
 response = client.text_to_speech.convert("kokoro", "Hello world!")
 response.save("output.wav")
+
+# Chat with LLM
+response = client.llm.chat("qwen", "Explain AI in simple terms")
+print(response.content)
 ```
 
 ## Authentication
@@ -313,17 +343,6 @@ print(response.content_type)  # e.g., "audio/wav"
 ### Large Language Models (LLM)
 
 The SDK supports chat completions with Qwen and other LLMs.
-
-#### Setting up LLM Endpoint
-
-```python
-import hathora
-
-client = hathora.Hathora(api_key="your-api-key")
-
-# Configure your LLM endpoint
-client.llm.set_endpoint("https://your-app.app.hathora.dev")
-```
 
 #### Simple Chat
 

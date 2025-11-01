@@ -35,7 +35,6 @@ class Hathora:
         >>> response.save("output.wav")
         >>>
         >>> # Chat with LLM
-        >>> client.llm.set_endpoint("https://your-app.app.hathora.dev")
         >>> response = client.llm.chat("qwen", "What is AI?")
         >>> print(response.content)
     """
